@@ -1,0 +1,113 @@
+const errorhandler = require('../../helpers/errorhandler.helper')
+const { sequelize } = require('../../models')
+
+module.exports = {
+    getAllPembatalanTransaksi: async (req, res) => {
+        try {
+            const {
+                start_date,
+                end_date,
+                search,
+                sortBy = 'tanggal',
+                sortOrder = 'desc',
+                limit = 10,
+                page = 1,
+            } = req.query
+
+            const pageSize = parseInt(limit) || 10
+            const currentPage = parseInt(page) || 1
+            const offset = (currentPage - 1) * pageSize
+
+            const sortableColumns = [
+                'tanggal',
+                'no_tiket',
+                'nomor_polisi',
+                'nama_member',
+                'alasan_batal',
+                'biaya_parkir',
+                'nama_petugas'
+            ]
+            const orderByColumn = sortableColumns.includes(sortBy)
+                ? sortBy
+                : 'tanggal'
+            const orderDirection =
+                sortOrder.toLowerCase() === 'asc' ? 'ASC' : 'DESC'
+
+            let whereClause = `WHERE t.is_active = false`
+            const replacements = {}
+
+            if (start_date) {
+                whereClause += ` AND t.tanggal_masuk::date >= :start_date`
+                replacements.start_date = start_date
+            }
+
+            if (end_date) {
+                whereClause += ` AND t.tanggal_masuk::date <= :end_date`
+                replacements.end_date = end_date
+            }
+
+            if (search) {
+                whereClause += ` AND (
+                    t.no_tiket ILIKE :search OR
+                    t.nomor_polisi ILIKE :search OR
+                    dm.nama ILIKE :search OR
+                    u.nama ILIKE :search
+                )`
+                replacements.search = `%${search}%`
+            }
+
+            const dataQuery = `
+                SELECT
+                    t.tanggal_masuk::date AS tanggal,
+                    t.no_tiket,
+                    t.nomor_polisi,
+                    dm.nama AS nama_member,
+                    t.keterangan_atau_penjelasan AS alasan_batal,
+                    t.tanggal_keluar,
+                    t.biaya_parkir,
+                    u.nama AS nama_petugas
+                FROM transaksis t
+                LEFT JOIN data_members dm ON dm.id = t.id_data_member
+                LEFT JOIN users u ON u.id = t.petugas_id
+                ${whereClause}
+                ORDER BY ${orderByColumn} ${orderDirection}
+                LIMIT :limit OFFSET :offset
+            `
+
+            const countQuery = `
+                SELECT COUNT(*) AS total
+                FROM transaksis t
+                LEFT JOIN data_members dm ON dm.id = t.id_data_member
+                LEFT JOIN users u ON u.id = t.petugas_id
+                ${whereClause}
+            `
+
+            const rows = await sequelize.query(dataQuery, {
+                replacements: { ...replacements, limit: pageSize, offset },
+                type: sequelize.QueryTypes.SELECT,
+            })
+
+            const countResult = await sequelize.query(countQuery, {
+                replacements,
+                type: sequelize.QueryTypes.SELECT,
+            })
+
+            const totalData = parseInt(countResult[0]?.total || 0, 10)
+            const totalPages = Math.ceil(totalData / pageSize)
+
+            return res.json({
+                success: true,
+                message: 'Get all transaksi yang dibatalkan successfully',
+                results: {
+                    data: rows,
+                    totalData,
+                    totalPages,
+                    currentPage,
+                    pageSize,
+                },
+            })
+        } catch (err) {
+            return errorhandler(res, err)
+        }
+    },
+}

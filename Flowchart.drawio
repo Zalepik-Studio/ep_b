@@ -1,0 +1,70 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0" version="28.0.9">
+  <diagram name="Page-1" id="hbwrVl3ueQLO0jt4X5lI">
+    <mxGraphModel dx="1034" dy="570" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="XimXgIEPHGc9YV49jyJd-1" value="SUPER ADMIN" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="90" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="XimXgIEPHGc9YV49jyJd-2" value="ADMINISTRATOR TENANT" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="370" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="XimXgIEPHGc9YV49jyJd-3" value="CUSTOM USER" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="670" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="XimXgIEPHGc9YV49jyJd-4" value="Untuk memiliki seluruh akses pada aplikasi" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="105" y="220" width="90" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="XimXgIEPHGc9YV49jyJd-5" value="Untuk memiliki seluruh akses kecuali management tenant" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="370" y="255" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="XimXgIEPHGc9YV49jyJd-6" value="Boleh di custom akses apapun tapi tidak akan pernah memiliki akses management tenant dan management level pengguna" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="660" y="260" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XimXgIEPHGc9YV49jyJd-7" value="&lt;font style=&quot;font-size: 36px;&quot;&gt;JENIS USER&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="320" y="30" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="XimXgIEPHGc9YV49jyJd-8" value="&lt;span style=&quot;font-size: 36px;&quot;&gt;ROLE BAWAAN DATABASE FRESH&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="175" y="370" width="480" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="XimXgIEPHGc9YV49jyJd-10" value="ROLE SUPER ADMIN" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="175" y="480" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="XimXgIEPHGc9YV49jyJd-11" value="ROLE ADMINISTRATOR&lt;div&gt;TENANT&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="565" y="480" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Px-c6Q20PLpV9tKj4zpu-3" value="SUPER ADMIN" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="42.5" y="750" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Px-c6Q20PLpV9tKj4zpu-4" value="ADMINISTRATOR TENANT" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="42.5" y="870" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Px-c6Q20PLpV9tKj4zpu-5" value="CUSTOM USER" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="42.5" y="990" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Px-c6Q20PLpV9tKj4zpu-6" value="&lt;font style=&quot;font-size: 36px;&quot;&gt;LINK API LEVEL PENGGUNA&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="187.5" y="640" width="455" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Px-c6Q20PLpV9tKj4zpu-7" value="&lt;span&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;span style=&quot;padding: var(--spacing-zero) 2px 1px; margin-left: var(--spacing-zero); border-radius: var(--border-radius-default); cursor: text; color: var(--content-color-info); border: 1px solid var(--border-color-default); font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, Cantarell, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, Helvetica, Arial, sans-serif; text-align: left; white-space-collapse: preserve;&quot; aria-expanded=&quot;false&quot; data-testid=&quot;resolvedVariable&quot; class=&quot;inlineVariable resolvedVariable&quot; spellcheck=&quot;false&quot;&gt;{{url}}&lt;/span&gt;&lt;span style=&quot;font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, Cantarell, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, Helvetica, Arial, sans-serif; text-align: left; white-space-collapse: preserve;&quot; data-offset-key=&quot;3dan4-1-0&quot;&gt;&lt;span style=&quot;&quot; data-text=&quot;true&quot;&gt;/master-data/level-pengguna&lt;/span&gt;&lt;/span&gt;&lt;/font&gt;&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="214.5" y="765" width="320" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Px-c6Q20PLpV9tKj4zpu-8" value="&lt;span&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;span style=&quot;padding: var(--spacing-zero) 2px 1px; margin-left: var(--spacing-zero); border-radius: var(--border-radius-default); cursor: text; color: var(--content-color-info); border: 1px solid var(--border-color-default); font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, Cantarell, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, Helvetica, Arial, sans-serif; text-align: left; white-space-collapse: preserve;&quot; aria-expanded=&quot;false&quot; data-testid=&quot;resolvedVariable&quot; class=&quot;inlineVariable resolvedVariable&quot; spellcheck=&quot;false&quot;&gt;{{url}}&lt;/span&gt;&lt;span style=&quot;font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, Cantarell, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, Helvetica, Arial, sans-serif; text-align: left; white-space-collapse: preserve;&quot; data-offset-key=&quot;3dan4-1-0&quot;&gt;&lt;span style=&quot;&quot; data-text=&quot;true&quot;&gt;/master-data/level-pengguna/admin-tenant&lt;/span&gt;&lt;/span&gt;&lt;/font&gt;&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="227.5" y="880" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Px-c6Q20PLpV9tKj4zpu-9" value="&lt;span&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;span style=&quot;padding: var(--spacing-zero) 2px 1px; margin-left: var(--spacing-zero); border-radius: var(--border-radius-default); cursor: text; color: var(--content-color-info); border: 1px solid var(--border-color-default); font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, Cantarell, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, Helvetica, Arial, sans-serif; text-align: left; white-space-collapse: preserve;&quot; aria-expanded=&quot;false&quot; data-testid=&quot;resolvedVariable&quot; class=&quot;inlineVariable resolvedVariable&quot; spellcheck=&quot;false&quot;&gt;{{url}}&lt;/span&gt;&lt;span style=&quot;font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, Cantarell, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, Helvetica, Arial, sans-serif; text-align: left; white-space-collapse: preserve;&quot; data-offset-key=&quot;3dan4-1-0&quot;&gt;&lt;span style=&quot;&quot; data-text=&quot;true&quot;&gt;/master-data/level-pengguna/custom-user&lt;/span&gt;&lt;/span&gt;&lt;/font&gt;&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="227.5" y="1005" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Px-c6Q20PLpV9tKj4zpu-10" value="TAMPIL SELURUH LEVEL PENGGUNA" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="697.5" y="740" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Px-c6Q20PLpV9tKj4zpu-11" value="SELURUH LEVEL PENGGUNA KECUALI SUPER ADMIN" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="697.5" y="855" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Px-c6Q20PLpV9tKj4zpu-12" value="SELURUH PENGGUNA KECUALI SUPER ADMIN DAN ADMIN TENANT" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="697.5" y="980" width="120" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

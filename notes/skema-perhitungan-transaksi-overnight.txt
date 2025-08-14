@@ -1,0 +1,24 @@
++------------+-------------------+-----------------+-------------------+-------------------+
+| Hari       | Waktu             | Rotasi          | Tarif per jam     | Keterangan        |
++------------+-------------------+-----------------+-------------------+-------------------+
+| Hari X     | Jam 1 (awal hari) | Rotasi 1        | Rate1             | Jam pertama hari itu
+|            | Jam 2             | Rotasi 2        | Rate2             | Jam kedua hari itu
+|            | Jam 3             | Rotasi 1        | Rate1             | Rotasi ulang
+|            | Jam 4             | Rotasi 2        | Rate2             | dst...
+|            | ...               | ...             | ...               | Sampai 24:00
+|            | TOTAL HARI        | -               | -                 | Jika > daily_max, pakai daily_max
++------------+-------------------+-----------------+-------------------+-------------------+
+| Hari X+1   | Jam 1 (awal hari) | Rotasi 1        | Rate1             | Reset rotasi
+|            | Jam 2             | Rotasi 2        | Rate2             | 
+|            | Jam 3             | Rotasi 1        | Rate1             | 
+|            | Jam 4             | Rotasi 2        | Rate2             | dst...
+|            | TOTAL HARI        | -               | -                 | Jika > daily_max, pakai daily_max
++------------+-------------------+-----------------+-------------------+-------------------+
+| Hari X+n   | ...               | ...             | ...               | Sama seperti pola di atas
++------------+-------------------+-----------------+-------------------+-------------------+
+
+Keterangan:
+- Rotasi selalu dimulai dari Rate1 setiap kali masuk hari baru (pukul 00:00).
+- Perhitungan biaya pro-rata per jam (atau per menit jika mau presisi).
+- Jika total harian melebihi daily_max, maka dibatasi sebesar daily_max.
+- Setelah 24:00 (overnight), hitungan rotasi kembali ke jam pertama.
