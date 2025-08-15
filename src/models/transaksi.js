@@ -92,6 +92,7 @@ module.exports = (sequelize, DataTypes) => {
             interval: DataTypes.STRING,
             keterangan_atau_penjelasan: DataTypes.STRING,
             id_data_member: { type: DataTypes.INTEGER, allowNull: true },
+            jenis_perhitungan_id: { type: DataTypes.INTEGER, allowNull: true }, // kolom baru
         },
         {
             sequelize,

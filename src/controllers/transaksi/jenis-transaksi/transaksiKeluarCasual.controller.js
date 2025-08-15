@@ -9,6 +9,7 @@ const {
     data_member,
     data_nomor_polisi,
     payment,
+    jenis_perhitungan_pembayaran,
     Sequelize,
 } = require('../../../models')
 const { Op } = Sequelize
@@ -29,6 +30,9 @@ module.exports = {
                 keterangan_atau_penjelasan,
                 jumlah_denda_stnk,
                 jumlah_denda_tiket,
+                jenis_perhitungan_id,
+                jenis_pembayaran_id,
+                id_data_member,
             } = req.body
 
             // ===============================
@@ -195,7 +199,6 @@ module.exports = {
             // ===============================
             // Pengecekan Jenis Pembayaran
             // ===============================
-            const { jenis_pembayaran_id, id_data_member } = req.body
 
             if (!jenis_pembayaran_id) {
                 return res.status(400).json({
@@ -238,16 +241,107 @@ module.exports = {
                     totalBayar = 0
                     // lanjut simpan transaksi casual tanpa perhitungan tarif
                 } else {
+                    // Informasi, tapi tidak return supaya alur lanjut ke perhitungan tarif
+                    console.log(
+                        `Transaksi casual dengan jenis pembayaran "${paymentMethod.jenis_payment}" boleh dilanjutkan ke perhitungan tarif.`
+                    )
+                }
+
+                // ===============================
+                // Pengecekan Jenis Perhitungan
+                // ===============================
+                if (!jenis_perhitungan_id) {
+                    return res.status(400).json({
+                        success: false,
+                        message:
+                            'Jenis perhitungan wajib diisi untuk transaksi casual yang dihitung tarifnya.',
+                    })
+                }
+
+                // Ambil data jenis perhitungan dari DB
+                const jenisPerhitungan =
+                    await jenis_perhitungan_pembayaran.findOne({
+                        where: { id: jenis_perhitungan_id },
+                    })
+
+                if (!jenisPerhitungan) {
+                    return res.status(404).json({
+                        success: false,
+                        message: `Jenis perhitungan dengan ID ${jenis_perhitungan_id} tidak ditemukan.`,
+                    })
+                }
+
+                // Kembalikan info ID dan nama jenis perhitungan
+                // return res.status(200).json({
+                //     success: true,
+                //     message: `Jenis perhitungan siap diproses.`,
+                //     data: {
+                //         id: jenisPerhitungan.id,
+                //         nama: jenisPerhitungan.nama,
+                //     },
+                // })
+
+                // === Ganti return info saja dengan perhitungan sementara ===
+                // Ambil data tarif dari data_member jika tersedia
+                const tarifData = data.data_member?.tarif || null
+
+                if (!tarifData) {
+                    console.log(
+                        'Tarif untuk transaksi ID:',
+                        data.id,
+                        'tidak ditemukan di data_member'
+                    )
+                    return res.status(404).json({
+                        success: false,
+                        message:
+                            'Data tarif untuk perhitungan transaksi ini tidak ditemukan.',
+                    })
+                }
+
+                // Gunakan tarifData untuk perhitungan
+                if (jenisPerhitungan.nama.toUpperCase() === 'REGULER') {
+                    let biayaParkir = 0
+
+                    const tanggalMasuk = new Date(data.tanggal_masuk)
+                    const tanggalKeluar = data.tanggal_keluar
+                        ? new Date(data.tanggal_keluar)
+                        : new Date()
+
+                    let durasiMenit = Math.ceil(
+                        (tanggalKeluar - tanggalMasuk) / 60000
+                    )
+
+                    if (durasiMenit <= tarifData.grace_period) {
+                        biayaParkir = tarifData.tarif_grace_period || 0
+                    } else if (durasiMenit <= tarifData.rotasi_pertama) {
+                        biayaParkir = tarifData.tarif_rotasi_pertama || 0
+                    } else if (durasiMenit <= tarifData.rotasi_kedua) {
+                        biayaParkir = tarifData.tarif_rotasi_kedua || 0
+                    } else {
+                        biayaParkir = tarifData.tarif_rotasi_ketiga || 0
+                    }
+
+                    if (
+                        tarifData.tarif_maksimal !== null &&
+                        biayaParkir > tarifData.tarif_maksimal
+                    ) {
+                        biayaParkir = tarifData.tarif_maksimal
+                    }
+
+                    // Return biaya sementara tanpa total + denda
                     return res.status(200).json({
                         success: false,
-                        message: `Transaksi casual dengan jenis pembayaran "${paymentMethod.jenis_payment}" boleh dilanjutkan ke perhitungan tarif.`,
+                        message: `Perhitungan sementara (Reguler): ${biayaParkir}`,
                     })
                 }
             }
 
             // === LOGIKA UNTUK MEMBER ===
             else {
-                // nanti jalankan logika member, misal validasi masa aktif dsb
+                return res.status(200).json({
+                    success: false,
+                    message: `#002 Transaksi casual dengan jenis pembayaran member boleh dilakukan untuk nomor polisi tidak terdaftar di data member.`,
+                })
             }
 
             // ===============================
