@@ -8,6 +8,7 @@ const {
     transaksi,
     data_member,
     data_nomor_polisi,
+    payment,
     Sequelize,
 } = require('../../../models')
 const { Op } = Sequelize
@@ -74,8 +75,6 @@ module.exports = {
                     message: 'Nomor tiket atau nomor polisi wajib diisi',
                 })
             }
-
-            
 
             // ===============================
             // Validasi tiket duplikat (sudah pernah digunakan)
@@ -192,6 +191,64 @@ module.exports = {
             // ===============================
             const selisihMs = keluar - masuk
             const selisihJam = Math.ceil(selisihMs / (1000 * 60 * 60))
+
+            // ===============================
+            // Pengecekan Jenis Pembayaran
+            // ===============================
+            const { jenis_pembayaran_id, id_data_member } = req.body
+
+            if (!jenis_pembayaran_id) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Jenis pembayaran wajib diisi.',
+                })
+            }
+
+            const paymentMethod = await payment.findOne({
+                where: { id: jenis_pembayaran_id },
+            })
+
+            if (!paymentMethod) {
+                return res.status(404).json({
+                    success: false,
+                    message: `Jenis pembayaran dengan ID ${jenis_pembayaran_id} tidak ditemukan.`,
+                })
+            }
+
+            // Daftar metode tanpa perhitungan tarif
+            const metodeTanpaTarif = ['VOUCHER', 'FREE', 'PREPAID']
+
+            // === LOGIKA UNTUK CASUAL ===
+            if (!id_data_member) {
+                if (paymentMethod.jenis_payment.toUpperCase() === 'MEMBER') {
+                    return res.status(400).json({
+                        success: false,
+                        message: `Transaksi casual tidak boleh menggunakan jenis pembayaran "Member".`,
+                    })
+                }
+
+                if (
+                    metodeTanpaTarif.includes(
+                        paymentMethod.jenis_payment?.toUpperCase()
+                    )
+                ) {
+                    biayaParkir = 0
+                    jumlahDendaTiket = 0
+                    jumlahDendaSTNK = 0
+                    totalBayar = 0
+                    // lanjut simpan transaksi casual tanpa perhitungan tarif
+                } else {
+                    return res.status(200).json({
+                        success: false,
+                        message: `Transaksi casual dengan jenis pembayaran "${paymentMethod.jenis_payment}" boleh dilanjutkan ke perhitungan tarif.`,
+                    })
+                }
+            }
+
+            // === LOGIKA UNTUK MEMBER ===
+            else {
+                // nanti jalankan logika member, misal validasi masa aktif dsb
+            }
 
             // ===============================
             // Bagian tarif & denda sementara dinonaktifkan
