@@ -282,23 +282,40 @@ module.exports = {
                 // })
 
                 // === Ganti return info saja dengan perhitungan sementara ===
-                // Ambil data tarif dari data_member jika tersedia
-                const tarifData = data.data_member?.tarif || null
+                // ===============================
+                // Ambil kendaraan dari transaksi
+                // ===============================
+                const kendaraanData = await kendaraan.findOne({
+                    where: { id: data.kendaraan_id },
+                    include: [
+                        {
+                            model: tarif_parkir,
+                            as: 'tarif_parkir',
+                        },
+                    ],
+                })
 
-                if (!tarifData) {
-                    console.log(
-                        'Tarif untuk transaksi ID:',
-                        data.id,
-                        'tidak ditemukan di data_member'
-                    )
+                if (!kendaraanData) {
                     return res.status(404).json({
                         success: false,
-                        message:
-                            'Data tarif untuk perhitungan transaksi ini tidak ditemukan.',
+                        message: `Kendaraan dengan ID ${data.kendaraan_id} tidak ditemukan.`,
                     })
                 }
 
-                // Gunakan tarifData untuk perhitungan
+                // Ambil tarif berdasarkan tipe kendaraan
+                const tarifData = kendaraanData.tarif_parkir
+
+                if (!tarifData) {
+                    return res.status(404).json({
+                        success: false,
+                        message:
+                            'Data tarif untuk tipe kendaraan ini tidak ditemukan.',
+                    })
+                }
+
+                // ===============================
+                // Perhitungan REGULER
+                // ===============================
                 if (jenisPerhitungan.nama.toUpperCase() === 'REGULER') {
                     let biayaParkir = 0
 
@@ -317,10 +334,17 @@ module.exports = {
                         biayaParkir = tarifData.tarif_rotasi_pertama || 0
                     } else if (durasiMenit <= tarifData.rotasi_kedua) {
                         biayaParkir = tarifData.tarif_rotasi_kedua || 0
-                    } else {
+                    } else if (durasiMenit <= tarifData.rotasi_ketiga) {
                         biayaParkir = tarifData.tarif_rotasi_ketiga || 0
+                    } else {
+                        // Jika lebih dari rotasi ketiga
+                        biayaParkir =
+                            tarifData.tarif_maksimal ||
+                            tarifData.tarif_rotasi_ketiga ||
+                            0
                     }
 
+                    // Batasi biaya dengan tarif maksimal
                     if (
                         tarifData.tarif_maksimal !== null &&
                         biayaParkir > tarifData.tarif_maksimal
@@ -328,9 +352,8 @@ module.exports = {
                         biayaParkir = tarifData.tarif_maksimal
                     }
 
-                    // Return biaya sementara tanpa total + denda
                     return res.status(200).json({
-                        success: false,
+                        success: true,
                         message: `Perhitungan sementara (Reguler): ${biayaParkir}`,
                     })
                 }
